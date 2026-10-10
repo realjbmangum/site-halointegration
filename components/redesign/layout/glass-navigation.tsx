@@ -22,6 +22,21 @@ export function GlassNavigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Close the mobile menu if the viewport grows past the md breakpoint, for
+  // example on tablet rotation. The toggle is md:hidden, so a menu left open
+  // across that boundary could not be closed by the user, and now that the
+  // header has a background the stuck state is visible rather than merely
+  // latent.
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)")
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) setMobileMenuOpen(false)
+    }
+    handleChange(mq)
+    mq.addEventListener("change", handleChange)
+    return () => mq.removeEventListener("change", handleChange)
+  }, [])
+
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/services", label: "Services" },
@@ -42,7 +57,7 @@ export function GlassNavigation() {
         // is named for is applied here, matching the --glass-border token in
         // app/brand.css. At the very top it stays transparent, which is what
         // the hero sections are designed for.
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300 ${
           scrolled || mobileMenuOpen
             ? "bg-[#0a0a0f]/85 backdrop-blur-xl border-b border-white/[0.08]"
             : "bg-transparent border-b border-transparent"
@@ -67,7 +82,7 @@ export function GlassNavigation() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav aria-label="Primary" className="hidden md:flex items-center gap-1">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
@@ -108,7 +123,9 @@ export function GlassNavigation() {
             <button
               className="md:hidden relative z-10 w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <AnimatePresence mode="wait">
                 {mobileMenuOpen ? (
@@ -162,7 +179,7 @@ export function GlassNavigation() {
             >
               <div className="container mx-auto px-4">
                 <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl p-6 shadow-2xl">
-                  <nav className="space-y-2">
+                  <nav id="mobile-menu" aria-label="Primary" className="space-y-2">
                     {navLinks.map((link, index) => (
                       <motion.div
                         key={link.href}

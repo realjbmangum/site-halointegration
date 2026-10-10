@@ -461,7 +461,7 @@ export const SERVICES: ServiceContent[] = [
       },
       {
         q: "Can AV be installed on the same project as cabling and network?",
-        a: "Yes, and it is usually cheaper that way. AV depends on the cabling and the network, so scoping them together avoids the common sequence where AV arrives after the pathways are closed up.",
+        a: "Yes. AV depends on the cabling and the network, so scoping them together avoids the common sequence where AV arrives after the pathways are closed up and has to be worked around.",
       },
       {
         q: "Who supports the rooms after handover?",

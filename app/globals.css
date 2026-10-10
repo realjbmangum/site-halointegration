@@ -134,3 +134,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* The header is fixed and 80px tall, and is opaque once scrolled. Without
+   this, tabbing to a link just below the fold scrolls it to the very top of
+   the viewport, underneath the header, where keyboard focus is hidden.
+   WCAG 2.2 SC 2.4.11 Focus Not Obscured. */
+html {
+  scroll-padding-top: 6rem;
+}
