@@ -121,8 +121,8 @@ export function AudienceDetail({ audience }: { audience: AudienceContent }) {
             Services we deliver for <span className="text-gradient">{audience.name}</span>
           </h2>
           <p className="text-white/50 mb-10 max-w-2xl">
-            Scoped together more often than separately, because they share the same cabling,
-            pathways and survey.
+            These share the same cabling, pathways and survey, so scoping them together
+            usually costs less than returning for each one.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((service) => (
