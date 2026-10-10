@@ -14,7 +14,11 @@ export function GlassNavigation() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
     }
-    window.addEventListener("scroll", handleScroll)
+    // Run once on mount as well as on scroll. A page opened at a hash, or
+    // restored mid-scroll by the browser, would otherwise render the nav
+    // transparent over content until the user scrolled again.
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -32,7 +36,17 @@ export function GlassNavigation() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50"
+        // The `scrolled` state was computed on every scroll event and never
+        // applied, so the header had no background at any scroll position and
+        // page content ran underneath it. The glass treatment this component
+        // is named for is applied here, matching the --glass-border token in
+        // app/brand.css. At the very top it stays transparent, which is what
+        // the hero sections are designed for.
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+          scrolled || mobileMenuOpen
+            ? "bg-[#0a0a0f]/85 backdrop-blur-xl border-b border-white/[0.08]"
+            : "bg-transparent border-b border-transparent"
+        }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
