@@ -8,11 +8,10 @@ import { ServiceDetail } from "@/components/services/service-detail"
 /**
  * The seven real service pages.
  *
- * A dynamic segment rather than seven near-identical directories. The five
- * pre-existing audience routes under /services/ (multi-family, hospitality,
- * enterprise, digital-solutions, infrastructure-consulting) are static
- * segments, and static segments take precedence over this one, so they are
- * unaffected.
+ * A dynamic segment rather than seven near-identical directories. The three
+ * audience routes under /services/ (multi-family, hospitality, enterprise)
+ * are static segments, and static segments take precedence over this one, so
+ * a service slug must never collide with one of those three names.
  */
 // Only the slugs below exist. Without this, `next dev` errors on an
 // unknown slug instead of returning the 404 the export produces.

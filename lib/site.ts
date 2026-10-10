@@ -36,13 +36,6 @@ export const BUSINESS = {
  */
 export const SERVICE_AREA = "United States"
 
-/** Audience pages, which sit above the service pages and link down into them. */
-export const SEGMENTS = [
-  { slug: "multi-family", name: "Multi-Family" },
-  { slug: "hospitality", name: "Hospitality" },
-  { slug: "enterprise", name: "Enterprise" },
-] as const
-
 /** Absolute URL for a path. Canonicals and JSON-LD need absolute URLs. */
 export function absoluteUrl(path = "/"): string {
   const clean = path === "/" ? "/" : `/${path.replace(/^\/|\/$/g, "")}/`

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { absoluteUrl } from "@/lib/site"
 import { SERVICES } from "@/lib/services"
+import { AUDIENCES } from "@/lib/audiences"
 
 /**
  * Generated sitemap.
@@ -43,8 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
-    // The five pre-redesign pages are deliberately absent. They are
-    // noindex until their bodies are rewritten, and listing a noindexed URL
-    // in a sitemap is a contradictory signal.
+    // The three audience pages. They route into the service pages above.
+    ...AUDIENCES.map((a) => ({
+      url: absoluteUrl(`/services/${a.slug}`),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ]
 }
