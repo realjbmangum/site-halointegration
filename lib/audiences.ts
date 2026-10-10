@@ -171,7 +171,7 @@ export const AUDIENCES: AudienceContent[] = [
       },
       {
         q: "Does this cover meeting and event space as well as guest rooms?",
-        a: "Yes. Meeting and amenity space usually needs AV and distributed audio on top of the cabling and wireless, and it is cheaper to scope alongside the guest floors than to return for it later.",
+        a: "Yes. Meeting and amenity space usually needs AV and distributed audio on top of the cabling and wireless. Scoping it alongside the guest floors means the pathways are specified once, before they are closed up.",
       },
     ],
   },
