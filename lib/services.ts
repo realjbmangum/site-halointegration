@@ -541,8 +541,6 @@ export const SERVICES: ServiceContent[] = [
   },
 ]
 
-export const SERVICE_SLUGS = SERVICES.map((s) => s.slug)
-
 export function getService(slug: string): ServiceContent | undefined {
   return SERVICES.find((s) => s.slug === slug)
 }
