@@ -502,6 +502,24 @@
   <p>Also fixed from the review: og:image dimensions were declared 1200x630 for every image including service JPEGs that are not that size; the Organization schema logo pointed at the white-on-transparent mark, which is illegible on white, and now uses the colour logo; <code>public/icon.svg</code> (the Next template default) and <code>app/icon.svg</code> (the Halo mark) both resolved to <code>/icon.svg</code>, so the template one is deleted; a lazy-loading attribute had been added to above-the-fold heroes, which hurts LCP; the contact page now sources its phone, email and address from the same constant as the schema; and <code>public/_redirects</code> sends any indexed <code>/redesign/*</code> URL to its real equivalent instead of a 404.</p>
   <p>Two of the code review's claims were checked and rejected: it reported the service titles at 65 to 74 characters and the sitemap at 17 URLs, both read from a stale build. Current state is 49 to 59 characters and 13 URLs.</p>
 
+  <h2>Follow-up, 10 October 2026</h2>
+  <p class="sec-note">The five pre-redesign pages described above are resolved. They are no longer noindex, because they no longer need to be.</p>
+  <ul class="plain">
+    <li><strong>Three rebuilt as audience pages.</strong> <code>multi-family</code>, <code>hospitality</code> and <code>enterprise</code>, in the dark theme, from a shared template. From 187 words of template boilerplate to roughly 600 each, and from invisible to legible. Their job is to route: each states what matters on that property type, links into every service page that applies, and shows the completed projects in its own category.</li>
+    <li><strong>Two deleted.</strong> <code>digital-solutions</code> and <code>infrastructure-consulting</code>, both superseded by real service pages, 301d to <code>structured-cabling</code> and <code>prop-tech-consulting</code>.</li>
+    <li><strong>The false claims are gone.</strong> No resident portals, no PMS integration, no revenue management, no cloud migration, no data centre solutions.</li>
+    <li><strong>The 18 projects moved to <code>lib/projects.ts</code></strong>, since two places now read them.</li>
+    <li><strong>The industry cards on <code>/services/</code> are now links.</strong> They never were, so there was no path from the services page down to anything.</li>
+  </ul>
+
+  <div class="core">
+    <h3>The same failure mode recurred in the first draft of this work, in a subtler form.</h3>
+    <p>No invented vendor names this time. Instead the Enterprise page asserted a multi-site rollout record it has no evidence for, including an FAQ answer beginning "Yes" and referring to "site ten", published inside FAQPage structured data, on the one page of the three that has no completed projects behind it. The Hospitality page answered "Can you work on an operating hotel without closing floors? Yes" and then described rooms coming out of service. The Multi-Family meta description advertised "smart apartment packages", a phrase that appears nowhere the business publishes.</p>
+    <p>All removed. The copy is now in process voice ("a multi-site scope starts with") rather than the voice of accomplished work, and an FAQ only answers "Yes" where the published site or the project list evidences it. The content rule at the top of <code>lib/audiences.ts</code> now states all three constraints explicitly, because stating it once in a neighbouring file did not prevent it.</p>
+  </div>
+
+  <p>Also fixed from that review: the CTA rendered "Planning a enterprise project?"; breadcrumb and project-caption text used <code>text-white/40</code>, roughly 3.8:1 and under the AA floor, now corrected on both this template and the service pages; breadcrumb links had no focus style; a heading said "12 completed properties" above a grid of six, and now says "6 of 12"; the sitemap carried a <code>lastmod</code> dated a day in the future; the audience list existed in four hand-maintained copies and is now derived from one; and the redirects only matched the trailing-slash form of each path, so the bare path would have 404d.</p>
+
   <h3>Confirmed while checking: no off-site presence at all</h3>
   <p>Searching the company name together with its own services and city returns one conference exhibitor listing and nothing else. No Google Business Profile surfaced, no directory listings, no vendor partner-directory entries. Competing Katy and Houston contractors appear in several. Nothing in the repo verifies Search Console either, though it may be verified by DNS.</p>
   <p>This is worth stating plainly: the on-site work above makes the site rankable. It does not create the citations and links that decide who wins a local contractor search. Items 3 and 4 in the list below are now the binding constraint, not the code.</p>

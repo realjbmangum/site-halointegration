@@ -25,7 +25,9 @@ npm run build   # static export into out/
 run `wrangler pages deploy` by hand; production goes through GitHub and a PR.
 
 `public/_redirects` is a Cloudflare Pages file and only takes effect once
-deployed. It currently holds 301s for the removed `/redesign/*` tree.
+deployed. It holds 301s for the removed `/redesign/*` tree and for the two
+deleted service pages. Note that a `/*` splat rule does not match the
+slashless form of a path, so each one is listed twice.
 
 ## Traps worth knowing before you touch anything
 
@@ -86,7 +88,7 @@ presentation in `components/services/service-detail.tsx`. Adding a service
 means adding an entry to `SERVICES`; the page, the sitemap and the footer pick
 it up.
 
-Five **static** sibling routes also live under `/services/` (see below). Static
+Three **static** sibling routes also live under `/services/` (see below). Static
 segments win over the dynamic one, so a new service slug that collides with one
 of those names would be silently shadowed. Check before naming one.
 
@@ -126,34 +128,42 @@ stock with garbled text in them, so the filename is a poor guide.
 
 ## Current state of `/services/`
 
-Seven real service pages, indexable, each with Service, BreadcrumbList and
-FAQPage schema:
+Two layers, and the distinction matters when adding a page.
+
+**Seven service pages**, one per thing the business sells. Dynamic route
+`app/(main)/services/[service]/page.tsx`, content in `lib/services.ts`:
 
 ```
 structured-cabling  network-wifi  video-surveillance  access-control
 voip-phone-systems  audio-video   prop-tech-consulting
 ```
 
-Five pre-redesign pages, **`noindex, follow` and absent from the sitemap**:
+**Three audience pages**, static routes, content in `lib/audiences.ts` and
+template in `components/audiences/audience-detail.tsx`:
 
 ```
-multi-family  hospitality  enterprise  digital-solutions  infrastructure-consulting
+multi-family  hospitality  enterprise
 ```
 
-They are noindexed for two reasons, both unresolved:
+An audience page's job is to route, not to duplicate. It states what matters
+on that kind of property, links into the service pages that apply, and shows
+the completed projects in its own category. It must not restate what a
+service is; the service page already does that.
 
-1. They style with light-theme shadcn tokens (`text-foreground`, `bg-secondary`)
-   inside a dark layout, so their H1 renders near-black on near-black and is
-   effectively invisible. Render one before assuming otherwise.
-2. Four of the five advertise services the business does not sell: custom
-   software development, mobile apps, cloud migration, revenue management,
-   resident portals. They are unedited starter-template defaults that shipped
-   and were never rewritten.
+Because the three audience slugs are **static** segments they take precedence
+over the dynamic `[service]` route. A new service slug that collides with
+`multi-family`, `hospitality` or `enterprise` would be silently shadowed.
 
-The standing recommendation is to delete `digital-solutions` and
-`infrastructure-consulting`, which the real service pages now cover, and rewrite
-the three audience pages in the dark theme as pages that link down into the
-service pages. Until then, leave the noindex in place.
+`digital-solutions` and `infrastructure-consulting` were deleted in October
+2026. They were pre-redesign pages superseded by the real service pages, and
+`public/_redirects` 301s them to `structured-cabling` and
+`prop-tech-consulting` respectively.
+
+Completed projects live in `lib/projects.ts`, not inside the projects page,
+because the audience pages filter them by category. There are currently 12
+multi-family and 6 hospitality projects and **no enterprise projects**, which
+is why the template omits the projects section entirely rather than rendering
+an empty shelf. Do not write copy implying an enterprise track record.
 
 ## SEO baseline
 

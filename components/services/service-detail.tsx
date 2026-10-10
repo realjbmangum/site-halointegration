@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Check } from "lucide-react"
 import type { ServiceContent } from "@/lib/services"
-import { SEGMENTS } from "@/lib/site"
+import { AUDIENCES } from "@/lib/audiences"
 
 /**
  * Presentational template shared by the seven service pages.
@@ -13,7 +13,8 @@ import { SEGMENTS } from "@/lib/site"
  * points. The existing dark brand classes come from app/brand.css.
  */
 export function ServiceDetail({ service }: { service: ServiceContent }) {
-  const segmentNames = new Map<string, string>(SEGMENTS.map((s) => [s.slug, s.name]))
+  // Derived from AUDIENCES so the two lists cannot drift apart.
+  const segmentNames = new Map<string, string>(AUDIENCES.map((a) => [a.slug, a.name]))
 
   return (
     <main className="bg-[#0a0a0f]">
@@ -22,20 +23,26 @@ export function ServiceDetail({ service }: { service: ServiceContent }) {
         <div className="absolute inset-0 grid-pattern opacity-[0.15]" aria-hidden="true" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-white/40">
+            <ol className="flex flex-wrap items-center gap-2 text-sm text-white/55">
               <li>
-                <Link href="/" className="hover:text-white/70 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffd5] rounded-sm"
+                >
                   Home
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
               <li>
-                <Link href="/services" className="hover:text-white/70 transition-colors">
+                <Link
+                  href="/services"
+                  className="hover:text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffd5] rounded-sm"
+                >
                   Services
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
-              <li className="text-white/70" aria-current="page">
+              <li className="text-white" aria-current="page">
                 {service.name}
               </li>
             </ol>
@@ -73,8 +80,8 @@ export function ServiceDetail({ service }: { service: ServiceContent }) {
       <section className="py-16 sm:py-20 border-t border-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-6">
-            {service.intro.map((para) => (
-              <p key={para.slice(0, 40)} className="text-lg text-white/70 leading-relaxed">
+            {service.intro.map((para, i) => (
+              <p key={i} className="text-lg text-white/70 leading-relaxed">
                 {para}
               </p>
             ))}

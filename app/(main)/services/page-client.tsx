@@ -164,16 +164,19 @@ const services = [
 const industries = [
   {
     title: "Multi-Family",
+    slug: "multi-family",
     description:
       "Built-to-scale infrastructure and integrated technology systems that enhance resident experience, streamline operations, and protect long-term asset value.",
   },
   {
     title: "Hospitality",
+    slug: "hospitality",
     description:
       "Future-ready infrastructure and guest-facing technology solutions designed to optimize operations, elevate the guest journey, and support brand standards.",
   },
   {
     title: "Enterprise",
+    slug: "enterprise",
     description:
       "Secure, scalable infrastructure and integrated systems that support mission-critical operations, compliance, and long-term performance.",
   },
@@ -274,12 +277,22 @@ export function ServicesPageClient() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[#00ffd5]/30 transition-all duration-500"
               >
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#00ffd5] transition-colors">
-                  {industry.title}
-                </h3>
-                <p className="text-white/70 leading-relaxed">{industry.description}</p>
+                {/* Linked: these cards are the route into the audience pages,
+                    which in turn route into the seven service pages. */}
+                <Link
+                  href={`/services/${industry.slug}`}
+                  className="group block h-full p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[#00ffd5]/30 transition-all duration-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00ffd5]"
+                >
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-[#00ffd5] transition-colors flex items-center justify-between gap-3">
+                    {industry.title}
+                    <ArrowRight
+                      className="w-5 h-5 flex-none text-white/30 group-hover:text-[#00ffd5] transition-colors"
+                      aria-hidden="true"
+                    />
+                  </h3>
+                  <p className="text-white/70 leading-relaxed">{industry.description}</p>
+                </Link>
               </motion.div>
             ))}
           </div>
