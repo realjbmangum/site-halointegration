@@ -6,6 +6,14 @@ import { ApproachSectionRedesign } from "@/components/redesign/home/approach-sec
 import { PartnerMarqueeRedesign } from "@/components/redesign/home/partner-marquee"
 import { AboutPreviewRedesign } from "@/components/redesign/home/about-preview"
 import { CTASectionRedesign } from "@/components/redesign/home/cta-section"
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Structured Cabling, Wi-Fi & Security",
+  description:
+    "Low voltage and digital infrastructure contractor for multi-family, hospitality and enterprise properties nationwide. Structured cabling, Wi-Fi, surveillance, access control and VoIP.",
+  path: "/",
+})
 
 export default function HomePage() {
   return (

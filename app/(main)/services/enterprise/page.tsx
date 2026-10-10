@@ -2,11 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { pageMetadata, breadcrumbSchema } from "@/lib/seo"
+import { JsonLd } from "@/components/seo/json-ld"
 
-export const metadata = {
-  title: "Enterprise Solutions | Halo Integration",
-  description: "Scalable infrastructure and technology solutions for large organizations.",
-}
+export const metadata = pageMetadata({
+  title: "Enterprise Technology Infrastructure",
+  description:
+    "Low voltage and network infrastructure for multi-site enterprises: campus cabling, switching, enterprise Wi-Fi, surveillance, access control and VoIP rolled out across locations.",
+  path: "/services/enterprise",
+  noindex: true,
+  image: "/services/digital-infrastructure.jpg",
+})
 
 export default function EnterprisePage() {
   const benefits = [
@@ -38,6 +44,12 @@ export default function EnterprisePage() {
 
   return (
     <main>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Services", path: "/services" },
+          { name: "Enterprise", path: "/services/enterprise" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,7 +70,7 @@ export default function EnterprisePage() {
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <img
                 src="/modern-technology-infrastructure-consulting-team-c.jpg"
-                alt="Enterprise solutions"
+                alt="Technology consulting team reviewing infrastructure plans"
                 className="w-full h-full object-cover"
               />
             </div>

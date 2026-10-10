@@ -2,11 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { pageMetadata, breadcrumbSchema } from "@/lib/seo"
+import { JsonLd } from "@/components/seo/json-ld"
 
-export const metadata = {
-  title: "Multi-Family Solutions | Halo Integration",
-  description: "Technology solutions for property management and resident experience.",
-}
+export const metadata = pageMetadata({
+  title: "Multi-Family Property Technology",
+  description:
+    "Technology infrastructure for apartment communities: structured cabling, property-wide Wi-Fi, access control, surveillance and smart apartment packages for new builds and retrofits.",
+  path: "/services/multi-family",
+  noindex: true,
+  image: "/services/digital-infrastructure.jpg",
+})
 
 export default function MultiFamilyPage() {
   const benefits = [
@@ -38,6 +44,12 @@ export default function MultiFamilyPage() {
 
   return (
     <main>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Services", path: "/services" },
+          { name: "Multi-Family", path: "/services/multi-family" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +72,7 @@ export default function MultiFamilyPage() {
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <img
                 src="/modern-office-building-technology.jpg"
-                alt="Multi-family property"
+                alt="Aerial view of a modern glass office building with rooftop solar panels"
                 className="w-full h-full object-cover"
               />
             </div>

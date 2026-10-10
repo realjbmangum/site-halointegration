@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halo Integration SEO Audit</title>
+<style>
+  :root {
+    --ink: #14171c;
+    --ink-soft: #4a5260;
+    --ink-faint: #6b7483;
+    --rule: #dfe3ea;
+    --rule-soft: #eceff4;
+    --bg: #ffffff;
+    --bg-soft: #f7f8fa;
+    --crit: #a4262c;
+    --crit-bg: #fdf3f3;
+    --warn: #8a5300;
+    --warn-bg: #fdf7ee;
+    --opp: #1f5c8b;
+    --opp-bg: #f1f7fb;
+    --pass: #1d6b47;
+    --pass-bg: #f1f8f4;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 50rem; margin: 0 auto; padding: 2rem 1rem 5rem; }
+  @media (min-width: 48rem) { .wrap { padding: 3.5rem 2rem 6rem; } }
+
+  /* Masthead */
+  .eyebrow {
+    font-size: .75rem; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-faint); margin: 0 0 .6rem;
+  }
+  h1 {
+    font-size: 1.9rem; line-height: 1.15; letter-spacing: -.02em;
+    margin: 0 0 .7rem; font-weight: 700;
+  }
+  @media (min-width: 48rem) { h1 { font-size: 2.5rem; } }
+  .dek { font-size: 1.05rem; color: var(--ink-soft); margin: 0 0 2rem; max-width: 38rem; }
+  .meta {
+    font-size: .8rem; color: var(--ink-faint); border-top: 1px solid var(--rule);
+    padding-top: .9rem; margin-bottom: 2.5rem;
+  }
+  .meta b { color: var(--ink-soft); font-weight: 600; }
+
+  /* Verdict */
+  .verdict {
+    border: 2px solid var(--ink); border-radius: 4px;
+    padding: 1.4rem 1.3rem; margin: 0 0 2.5rem;
+  }
+  .score-row { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-bottom: .5rem; }
+  .score { font-size: 2.6rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+  .score-of { font-size: 1rem; color: var(--ink-faint); font-weight: 600; }
+  .score-band {
+    font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    color: #fff; background: var(--crit); padding: .22rem .5rem; border-radius: 3px;
+  }
+  .verdict p { margin: .5rem 0 0; color: var(--ink-soft); font-size: .95rem; }
+
+  /* Fact strip */
+  .facts {
+    display: grid; grid-template-columns: 1fr; gap: 0;
+    border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; margin: 0 0 3rem;
+  }
+  @media (min-width: 34rem) { .facts { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 52rem) { .facts { grid-template-columns: repeat(3, 1fr); } }
+  .fact { padding: 1rem 1.1rem; border-bottom: 1px solid var(--rule-soft); background: var(--bg-soft); }
+  .fact-n { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; display: block; line-height: 1.2; }
+  .fact-l { font-size: .82rem; color: var(--ink-soft); display: block; margin-top: .15rem; }
+
+  /* Sections */
+  h2 {
+    font-size: 1.35rem; letter-spacing: -.015em; margin: 3.2rem 0 .3rem;
+    padding-bottom: .5rem; border-bottom: 2px solid var(--ink); font-weight: 700;
+  }
+  .sec-note { font-size: .9rem; color: var(--ink-faint); margin: .6rem 0 1.4rem; }
+  h3 { font-size: 1.02rem; margin: 2rem 0 .5rem; font-weight: 700; }
+  p { margin: 0 0 1rem; }
+
+  /* Callout */
+  .core {
+    background: var(--crit-bg); border-left: 4px solid var(--crit);
+    padding: 1.2rem 1.3rem; margin: 1.5rem 0 2rem; border-radius: 0 4px 4px 0;
+  }
+  .core h3 { margin-top: 0; color: var(--crit); }
+  .core p:last-child { margin-bottom: 0; }
+
+  /* Findings */
+  .find { border: 1px solid var(--rule); border-radius: 4px; margin-bottom: .9rem; overflow: hidden; }
+  .find-h {
+    display: flex; gap: .7rem; align-items: flex-start;
+    padding: .85rem 1rem; background: var(--bg-soft); border-bottom: 1px solid var(--rule-soft);
+  }
+  .tag {
+    flex: none; font-size: .67rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; padding: .22rem .45rem; border-radius: 3px; margin-top: .12rem;
+  }
+  .t-crit { background: var(--crit); color: #fff; }
+  .t-warn { background: var(--warn); color: #fff; }
+  .t-opp  { background: var(--opp);  color: #fff; }
+  .t-pass { background: var(--pass); color: #fff; }
+  .find-t { font-weight: 700; font-size: .97rem; line-height: 1.4; }
+  .find-b { padding: .9rem 1rem; font-size: .92rem; color: var(--ink-soft); }
+  .find-b p { margin: 0 0 .6rem; }
+  .find-b p:last-child { margin-bottom: 0; }
+  .ev {
+    display: block; margin-top: .6rem; padding-top: .6rem;
+    border-top: 1px dashed var(--rule); font-size: .82rem; color: var(--ink-faint);
+  }
+  .ev b { color: var(--ink-soft); font-weight: 600; }
+  code {
+    font: 500 .86em/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--rule-soft); padding: .1em .32em; border-radius: 3px;
+    color: var(--ink); word-break: break-word;
+  }
+
+  /* Table */
+  .tbl-wrap { overflow-x: auto; margin: 1.2rem 0 2rem; border: 1px solid var(--rule); border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 30rem; }
+  th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  th { background: var(--bg-soft); font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td.no { color: var(--crit); font-weight: 600; }
+  td.yes { color: var(--pass); font-weight: 600; }
+
+  /* Lists */
+  ol.steps { padding-left: 0; list-style: none; counter-reset: s; margin: 1.2rem 0 2rem; }
+  ol.steps > li {
+    counter-increment: s; position: relative; padding: 0 0 1rem 2.6rem; margin-bottom: 1rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  ol.steps > li:last-child { border-bottom: 0; }
+  ol.steps > li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 1.8rem; height: 1.8rem; border-radius: 50%;
+    background: var(--ink); color: #fff; font-size: .85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.steps strong { display: block; margin-bottom: .2rem; }
+  ol.steps span { font-size: .91rem; color: var(--ink-soft); }
+  ul.plain { padding-left: 1.2rem; margin: .5rem 0 1rem; }
+  ul.plain li { margin-bottom: .35rem; font-size: .93rem; color: var(--ink-soft); }
+
+  .phase { border: 1px solid var(--rule); border-radius: 4px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+  .phase-h { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .3rem; }
+  .phase h3 { margin: 0 0 .5rem; font-size: 1.05rem; }
+
+  footer { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-size: .82rem; color: var(--ink-faint); }
+
+  a { color: var(--opp); }
+  a:focus-visible, li:focus-visible { outline: 3px solid var(--opp); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">SEO Audit</p>
+  <h1>Halo Integration</h1>
+  <p class="dek">The site looks good and loads. It is close to invisible in search, and the reasons are specific and fixable.</p>
+  <p class="meta">
+    <b>Site</b> halointegration.com &nbsp;·&nbsp;
+    <b>Repo</b> realjbmangum/site-halointegration &nbsp;·&nbsp;
+    <b>Stack</b> Next.js 16 static export on Cloudflare Pages &nbsp;·&nbsp;
+    <b>Pages audited</b> 12 live routes, plus 5 duplicate preview routes &nbsp;·&nbsp;
+    <b>Date</b> 9 October 2026
+  </p>
+
+  <div class="verdict">
+    <div class="score-row">
+      <span class="score">34</span>
+      <span class="score-of">/ 100</span>
+      <span class="score-band">Critical</span>
+    </div>
+    <p>Nothing here is broken in a way a visitor would notice. Everything here is broken in a way a search engine would notice. The site was built as a brochure for people Kyle already sends to it, not as something that gets found, and it has no technical search foundation at all: no canonical tags, no structured data, and one title shared across seven pages.</p>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><span class="fact-n">7 of 12</span><span class="fact-l">live pages share one identical title and description</span></div>
+    <div class="fact"><span class="fact-n">0</span><span class="fact-l">canonical tags anywhere on the site</span></div>
+    <div class="fact"><span class="fact-n">0</span><span class="fact-l">pages with structured data (no LocalBusiness, no Organization)</span></div>
+    <div class="fact"><span class="fact-n">0</span><span class="fact-l">pages for the 7 services they actually sell</span></div>
+    <div class="fact"><span class="fact-n">1</span><span class="fact-l">mention of Katy or Houston outside the contact page</span></div>
+    <div class="fact"><span class="fact-n">55 MB</span><span class="fact-l">of assets shipped, including 14 MB duplicated and 2 unused zips</span></div>
+  </div>
+
+  <h2>The core problem</h2>
+  <p class="sec-note">Everything in the critical list below is worth fixing. None of it matters as much as this.</p>
+
+  <div class="core">
+    <h3>The site is organised by who the customer is. Search demand is organised by what the job is.</h3>
+    <p>Halo sells seven named services: structured cabling, network and Wi-Fi, video surveillance, access control, prop-tech consulting, audio and video, and VoIP phones. Every one of those is a phrase people type into Google with money in hand. Not one of them has a page.</p>
+    <p>They are cards on <code>/services/</code>. Meanwhile the five pages that do exist target <em>Multi-Family</em>, <em>Hospitality</em>, <em>Enterprise</em>, <em>Digital Solutions</em> and <em>Infrastructure Consulting</em>, which are segment labels and internal vocabulary, not search terms. Nobody searches "infrastructure technology consulting", which is the phrase in the homepage title.</p>
+    <p>The images are already sitting in <code>public/services/</code>: <code>access-control.jpg</code>, <code>wifi.jpg</code>, <code>voip.jpg</code>, <code>surveillance.jpg</code>, <code>av.jpg</code>, <code>prop-tech.jpg</code>, <code>digital-infrastructure.jpg</code>. Seven service pages are half-built and have never been assembled.</p>
+  </div>
+
+  <h3>Second half of the same problem: no geography</h3>
+  <p>Halo is a Katy, Texas contractor serving the Houston metro. Low voltage and cabling work is bought locally, and the competitors who show up for these searches say where they are in the title tag. Halo mentions Katy once, on the contact page, and Houston not at all outside project captions. There is no Google Business Profile signal in the markup, no address in structured data, and no city in any title, description or H1.</p>
+  <p>The practical effect: for "structured cabling Houston" the site has no page, no geographic signal and no schema. It cannot rank for it. It is not losing that search, it is absent from it.</p>
+
+  <h2>Critical issues</h2>
+  <p class="sec-note">Each of these is independently enough to suppress ranking. All are confirmed against the live production HTML, not inferred from source.</p>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">1. Seven live pages serve the same title and meta description</span></div>
+    <div class="find-b">
+      <p>Home, <code>/about/</code>, <code>/services/</code>, <code>/contact/</code>, <code>/projects/</code> and <code>/videos/</code> all return <code>Halo Integration | Infrastructure Technology Consulting</code> and the same description. Google has nothing to tell these pages apart, so it picks one and discards the rest.</p>
+      <p><strong>Root cause, and it is not laziness:</strong> every one of those page files starts with <code>"use client"</code>. A client component in the App Router cannot export <code>metadata</code>, so Next silently falls back to the root layout for all of them. Adding a <code>metadata</code> export to those files does nothing. Each page needs splitting into a server page that owns the metadata plus a client child that owns the animation.</p>
+      <span class="ev"><b>Evidence</b> <code>curl</code> of all 6 routes returns byte-identical title and description. <code>"use client"</code> present in <code>app/(main)/{about,services,contact,projects,videos}/page.tsx</code>. Only the 5 service sub-pages have their own metadata, and they are server components.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">2. A full duplicate of the site is live and indexable at /redesign/</span></div>
+    <div class="find-b">
+      <p><code>/redesign/</code> returns HTTP 200 with the same hero, same copy and same components as the homepage, under the title <code>Halo Integration | Redesign Preview</code>. Five routes exist under it. It is not in the sitemap, but it is crawlable, not noindexed, and not canonicalised.</p>
+      <p>This is the worst kind of duplicate content: a near-exact copy of the page you want to rank, with a weaker title. It was kept deliberately after the redesign went live (noted in <code>progress.txt</code>, March 2026) and then forgotten.</p>
+      <span class="ev"><b>Evidence</b> <code>curl -I https://halointegration.com/redesign/</code> returns 200. <code>app/redesign/</code> holds 5 page files and its own layout and globals.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">3. No canonical tags and no metadataBase</span></div>
+    <div class="find-b">
+      <p>Zero <code>&lt;link rel="canonical"&gt;</code> on any page. With <code>trailingSlash: true</code>, a static export and Cloudflare Pages all in play, the same page is reachable at more than one URL, and there is nothing telling Google which one counts. No <code>metadataBase</code> in the root layout either, which is also why Open Graph images would not resolve even once one is added.</p>
+      <span class="ev"><b>Evidence</b> No canonical in any fetched page. <code>app/layout.tsx</code> metadata block has no <code>metadataBase</code>, no <code>alternates</code>.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">4. No structured data of any kind</span></div>
+    <div class="find-b">
+      <p>No JSON-LD anywhere. For a local contractor this is the cheapest significant win available and it is simply absent. Missing: <code>LocalBusiness</code> with the Katy address and service area, <code>Organization</code> with the logo and social profiles, <code>Service</code> per service page, <code>BreadcrumbList</code>, and <code>VideoObject</code> on <code>/videos/</code>.</p>
+      <p>Consequence beyond blue links: AI assistants and Google's own local pack lean heavily on this markup. Halo currently gives them nothing machine readable about what it does or where.</p>
+      <span class="ev"><b>Evidence</b> <code>grep</code> for <code>application/ld+json</code> and <code>schema.org</code> across <code>app/</code> and <code>components/</code> returns nothing.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">5. The homepage H1 says nothing, three times</span></div>
+    <div class="find-b">
+      <p>The homepage ships three separate <code>&lt;h1&gt;</code> tags reading <code>Illuminating</code>, a gradient middle word, and <code>with Excellence</code>. That is the single strongest on-page signal on the site, and it contains no service, no industry and no place. The animation splits the headline into three elements, and each got an <code>h1</code>.</p>
+      <p>Pattern repeats elsewhere: <code>components/about/company-story.tsx</code> has two.</p>
+      <span class="ev"><b>Evidence</b> Three <code>&lt;h1&gt;</code> in the live homepage HTML. <code>components/redesign/home/hero-section.tsx</code>.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">6. Service hero images are 2 MB to 3 MB each, unoptimised, with no lazy loading</span></div>
+    <div class="find-b">
+      <p><code>next.config.mjs</code> sets <code>images: { unoptimized: true }</code>, which is required for static export but means every image ships exactly as it sits on disk. The service images are raw camera-weight JPEGs: <code>av.jpg</code> 3.0 MB, <code>access-control.jpg</code> 2.4 MB, <code>voip.jpg</code> 2.3 MB, <code>prop-tech.jpg</code> 2.2 MB, <code>wifi.jpg</code> 2.1 MB, <code>surveillance.jpg</code> 1.8 MB.</p>
+      <p>Eleven assets are additionally <code>rel="preload"</code>ed in the response headers, so they compete for bandwidth during the critical render path. This will be failing Largest Contentful Paint on mobile, which is a direct ranking factor.</p>
+      <span class="ev"><b>Evidence</b> <code>ls -l public/services/</code>. <code>link:</code> response header on <code>/</code> preloads 11 images. 3 <code>loading="lazy"</code> attributes across the whole codebase.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Critical</span><span class="find-t">7. 14 MB of assets are shipped twice, plus two zip archives</span></div>
+    <div class="find-b">
+      <p><code>public/Services Page/</code> is a byte-for-byte duplicate of <code>public/services/</code>, 14.4 MB, differing only in filename casing and spaces. <code>public/Partner Logos/</code> duplicates <code>public/partner-logos/</code> the same way. <code>public/Partner Logos.zip</code> and <code>public/Services Page.zip</code> are also deployed and publicly downloadable.</p>
+      <p>This is the leftover of the "rename folders to remove spaces" commit (<code>1d33c0c</code>), where the new copies were added and the old ones never deleted. Total <code>public/</code> is 55 MB.</p>
+      <span class="ev"><b>Evidence</b> <code>du -sh public</code> is 55M. Identical byte sizes across both directory pairs.</span>
+    </div>
+  </div>
+
+  <h2>Warnings</h2>
+  <p class="sec-note">Real problems, lower blast radius than the list above.</p>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Warning</span><span class="find-t">8. Sitemap is hand written, incomplete and missing lastmod</span></div>
+    <div class="find-b">
+      <p>Nine URLs listed, twelve pages live. <code>/projects/</code> and <code>/videos/</code> are absent, and <code>/projects/</code> holds the 18 real closed projects, which is the most persuasive content on the site. No <code>lastmod</code> on any entry. Being a static file, it will drift again the next time a page is added.</p>
+      <span class="ev"><b>Evidence</b> <code>public/sitemap.xml</code>, 9 <code>&lt;url&gt;</code> entries. Both missing routes return 200 live.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Warning</span><span class="find-t">9. No Open Graph image, no Twitter card</span></div>
+    <div class="find-b">
+      <p><code>openGraph</code> declares title, description and type, but no <code>images</code> and no <code>url</code>. No <code>twitter</code> block at all. Every link shared to LinkedIn, in email or in a text message renders as a bare grey rectangle. For a business where Kyle sends the link directly to prospects, this is a visible credibility cost as much as an SEO one.</p>
+      <span class="ev"><b>Evidence</b> <code>app/layout.tsx</code> lines 12 to 16.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Warning</span><span class="find-t">10. Eight images have no alt attribute, and the alt text that exists is thin</span></div>
+    <div class="find-b">
+      <p>Eight <code>&lt;img&gt;</code> tags across <code>/projects/</code>, four service sub-pages and three dead components carry no <code>alt</code> at all. Where alt exists it restates the page title (<code>alt="Hospitality technology"</code>, <code>alt="Digital solutions"</code>) rather than describing the image. Two are empty strings on decorative hero images, which is correct usage.</p>
+      <p>The 18 project photos are the clearest case: each is a named property in a named city, and the alt text is the one place that could say so.</p>
+      <span class="ev"><b>Evidence</b> 13 <code>&lt;img&gt;</code> tags outside <code>redesign/</code>, 8 with no <code>alt</code>. <code>app/(main)/projects/page.tsx:302</code>.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Warning</span><span class="find-t">11. Dead code carries a second, wrong company address</span></div>
+    <div class="find-b">
+      <p><code>components/contact/contact-info.tsx</code> holds <code>801 Travis Street, Suite 2101 #826 - Houston, TX 77002</code>, the pre-move Houston address. The whole pre-redesign component tree is orphaned: <code>components/home/</code>, <code>components/about/</code>, <code>components/contact/</code>, <code>components/navigation.tsx</code>, <code>components/footer.tsx</code>.</p>
+      <p><strong>Checked, and it does not currently render.</strong> Nothing imports it, so there is no live address conflict today. It is a trap rather than an active bug: the moment someone reuses one of those components, the site publishes two addresses and local ranking suffers. Worth deleting while the reason is known.</p>
+      <span class="ev"><b>Evidence</b> <code>grep</code> for imports of <code>contact-info</code>, <code>components/home/</code>, <code>components/about/</code>, <code>components/navigation</code>, <code>components/footer</code> returns zero hits.</span>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Warning</span><span class="find-t">12. The 5 service sub-pages are off-brand and thin</span></div>
+    <div class="find-b">
+      <p>These are the only pages with their own metadata, and they are pre-redesign: light theme, old Button and Card components, visibly a different website. Known and deferred in May 2026. Their descriptions are also short enough that Google will rewrite them (<code>"Technology solutions for property management and resident experience."</code> is 63 characters against a 150 to 160 target).</p>
+      <p>Relevant to the restructure below: if the page set is reorganised around services, three of these five pages change job anyway, so the dark rebuild and the SEO work are the same piece of work.</p>
+      <span class="ev"><b>Evidence</b> <code>progress.txt</code> 2026-05-16 gotchas. Metadata exports in all 5 <code>app/(main)/services/*/page.tsx</code>.</span>
+    </div>
+  </div>
+
+  <h2>Opportunities</h2>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-opp">Opportunity</span><span class="find-t">13. 18 real closed projects, doing almost no work</span></div>
+    <div class="find-b">
+      <p>Twelve multi-family and six hospitality properties, each with a photo, a real name, a city and a unit or room count. This is the hardest content to fake and the easiest to rank: property name searches have almost no competition, and "cabling contractor who did <em>that</em> building" is exactly how this work gets referred.</p>
+      <p>They currently live as cards in one array on one page with no individual URLs. Eighteen project pages, each with its city, scope and schema, would roughly triple the indexable surface of the site using content that already exists.</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-opp">Opportunity</span><span class="find-t">14. Named partners are unclaimed authority</span></div>
+    <div class="find-b">
+      <p>Verkada, Brivo, Graybar, Best Buy Business, Eagle Eye Networks, OCC, WorldVue, OFS. "Certified Verkada installer Houston" and the equivalents for each are low-competition, high-intent searches, and the logos currently scroll past unlinked with no page naming the relationship. Most of these vendors also run partner directories, which are the kind of inbound link this site has none of.</p>
+    </div>
+  </div>
+
+  <div class="find">
+    <div class="find-h"><span class="tag t-opp">Opportunity</span><span class="find-t">15. /videos/ has 9 YouTube embeds and no VideoObject schema</span></div>
+    <div class="find-b">
+      <p>Nine curated videos from <code>@halo_integration</code>, embedded as bare iframes. With <code>VideoObject</code> markup these become eligible for video rich results. The embeds are also render blocking and would benefit from the lightweight facade pattern, which helps both the page weight problem and the schema one.</p>
+    </div>
+  </div>
+
+  <h2>What is already right</h2>
+  <div class="find">
+    <div class="find-h"><span class="tag t-pass">Passing</span><span class="find-t">Foundations that do not need touching</span></div>
+    <div class="find-b">
+      <ul class="plain">
+        <li><code>robots.txt</code> is correct and points at the sitemap.</li>
+        <li>HTTPS, HTTP/2, clean 200s on every route tested, no redirect chains.</li>
+        <li><code>lang="en"</code> and a correct viewport meta are set.</li>
+        <li>Consistent trailing slashes, so no mixed-URL duplication from that direction.</li>
+        <li>One H1 per page on all pages except the homepage and the About story component.</li>
+        <li>Responsive implementation throughout, with real mobile breakpoints rather than a scaled desktop layout.</li>
+        <li>Navigation and footer link consistently, and every live page is reachable. No orphans.</li>
+        <li>The project images were already optimised down from 11 MB to 13 MB PNGs in May. That instinct just never reached <code>public/services/</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Scorecard</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Dimension</th><th>Score</th><th>Short version</th></tr></thead>
+    <tbody>
+      <tr><td>Keyword and page strategy</td><td class="no">10 / 100</td><td>Targets segment labels, not the services people search</td></tr>
+      <tr><td>Structured data</td><td class="no">0 / 100</td><td>None present</td></tr>
+      <tr><td>Local signals</td><td class="no">15 / 100</td><td>Address on one page, nowhere else, no schema</td></tr>
+      <tr><td>Meta tags</td><td class="no">25 / 100</td><td>7 pages share one title, no canonicals, no OG image</td></tr>
+      <tr><td>Indexation and crawl</td><td class="no">40 / 100</td><td>Duplicate site live, sitemap incomplete</td></tr>
+      <tr><td>Performance</td><td class="no">35 / 100</td><td>Multi-megabyte heroes, 11 preloads, 55 MB shipped</td></tr>
+      <tr><td>Headings</td><td class="no">40 / 100</td><td>Three H1s on the homepage, none carrying meaning</td></tr>
+      <tr><td>Images</td><td class="no">45 / 100</td><td>8 missing alt, generic alt elsewhere</td></tr>
+      <tr><td>Internal linking</td><td class="yes">75 / 100</td><td>Consistent, no orphans, thin anchor variety</td></tr>
+      <tr><td>Mobile and accessibility</td><td class="yes">80 / 100</td><td>Genuinely responsive, needs a contrast pass</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>The plan</h2>
+  <p class="sec-note">Ordered so the cheap irreversible-mistake fixes land before the expensive content work.</p>
+
+  <div class="phase">
+    <p class="phase-h">Phase 1 &nbsp;·&nbsp; Technical floor</p>
+    <h3>No copy decisions, no client sign-off needed</h3>
+    <ul class="plain">
+      <li>Noindex or delete <code>/redesign/</code>.</li>
+      <li>Add <code>metadataBase</code> and per-page canonicals.</li>
+      <li>Split the 6 client pages into server shell plus client child, then give each a real title and description.</li>
+      <li>Add <code>LocalBusiness</code>, <code>Organization</code> and <code>BreadcrumbList</code> JSON-LD with the Katy address and service area.</li>
+      <li>Generate the sitemap from the route list instead of hand maintaining it, with <code>lastmod</code>.</li>
+      <li>Collapse the homepage to one H1, fix the About duplicate.</li>
+      <li>Delete <code>public/Services Page/</code>, <code>public/Partner Logos/</code> and both zips. Compress the 7 service heroes. Expect 55 MB down to roughly 12 MB.</li>
+      <li>Add an OG image. Add the 8 missing alt attributes and rewrite the generic ones.</li>
+      <li>Delete the orphaned pre-redesign component tree and the stale Houston address with it.</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <p class="phase-h">Phase 2 &nbsp;·&nbsp; Pages that match demand</p>
+    <h3>Needs your call on scope, and probably Kyle's on copy</h3>
+    <ul class="plain">
+      <li>Seven service pages, one per thing they actually sell, each targeting the service term plus the metro. Images already exist.</li>
+      <li>Rework the 5 existing segment pages into the dark theme as audience pages that link down into the service pages, which also clears the deferred May item.</li>
+      <li>Geography worked into titles, descriptions, H1s and body copy rather than bolted on.</li>
+      <li>Rewrite the homepage H1 so it says what Halo does and where. This is the single highest-value copy change on the site and the one most likely to need Kyle.</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <p class="phase-h">Phase 3 &nbsp;·&nbsp; Compounding</p>
+    <h3>After the foundation holds</h3>
+    <ul class="plain">
+      <li>18 individual project pages from the content already in the repo, each with city and scope schema.</li>
+      <li>Partner pages for the certifications worth claiming, and submissions to those vendors' installer directories for the first real inbound links.</li>
+      <li><code>VideoObject</code> schema and facade loading on <code>/videos/</code>.</li>
+      <li>Search Console and a baseline, so the next audit measures instead of guessing.</li>
+    </ul>
+  </div>
+
+  <h2>What I need from you</h2>
+  <ol class="steps">
+    <li><strong>Confirm the service area.</strong><span>Is this Houston metro only, or statewide Texas? The contact form offers all 50 states and the projects list Tyler, Frisco and Dallas, which suggests wider than Katy. This decides whether we build one metro page set or a state structure, and it is expensive to change later.</span></li>
+    <li><strong>Tell me how far Phase 2 copy can go without Kyle.</strong><span>Phase 1 I can do now. Rewriting the homepage H1 off "Illuminating with Excellence" is a brand change on a client site, and I would rather ask than ship it and have it come back.</span></li>
+    <li><strong>Check whether Halo has a Google Business Profile.</strong><span>For a local contractor this is comparable in value to everything in Phase 1 combined, and it is not something I can see from the code or create for you. If it does not exist, or still shows the Travis Street address, that is the highest-return hour anyone spends on this.</span></li>
+    <li><strong>Confirm Search Console access.</strong><span>There is no verification file or meta tag in the repo, so I cannot tell whether the property is set up. Without it we are optimising blind and will not be able to show Kyle what changed.</span></li>
+    <li><strong>Say whether /redesign/ gets noindexed or deleted.</strong><span>My recommendation is delete. It has served its purpose, it duplicates the live site, and <code>components/redesign/</code> stays where it is regardless since the live site imports from it.</span></li>
+  </ol>
+
+  <h2>What changed, 9 October 2026</h2>
+  <p class="sec-note">Branch <code>seo/technical-floor</code>. Phase 1 complete, plus the Phase 2 service pages. Build verified green, every claim below checked against the generated output rather than the source.</p>
+
+  <div class="facts">
+    <div class="fact"><span class="fact-n">18 of 18</span><span class="fact-l">pages carry a unique title and canonical, up from 5</span></div>
+    <div class="fact"><span class="fact-n">+7</span><span class="fact-l">service pages, roughly 600 words each, where there were cards</span></div>
+    <div class="fact"><span class="fact-n">4 types</span><span class="fact-l">of structured data per service page, up from none sitewide</span></div>
+    <div class="fact"><span class="fact-n">55 → 6 MB</span><span class="fact-l">of shipped assets, an 89% reduction</span></div>
+    <div class="fact"><span class="fact-n">1</span><span class="fact-l">H1 per page, everywhere, down from three on the homepage</span></div>
+    <div class="fact"><span class="fact-n">0</span><span class="fact-l">duplicate routes: /redesign/ deleted, with 301s in place</span></div>
+  </div>
+
+  <h3>Closed</h3>
+  <ul class="plain">
+    <li><strong>Critical 1, duplicate titles.</strong> The five <code>"use client"</code> pages were split into a server <code>page.tsx</code> that owns the metadata and a <code>page-client.tsx</code> that owns the animation. That was the actual blocker, not a missing export.</li>
+    <li><strong>Critical 2, duplicate site.</strong> <code>app/redesign/</code> deleted. Its stylesheet, which the root layout imports, was preserved as <code>app/brand.css</code>. <code>components/redesign/</code> is untouched because the live site is built from it.</li>
+    <li><strong>Critical 3, canonicals.</strong> <code>metadataBase</code> set and every page emits one canonical, through a single <code>pageMetadata()</code> helper so a future page cannot be added without one.</li>
+    <li><strong>Critical 4, structured data.</strong> Organization, LocalBusiness with the Katy address, and WebSite sitewide; BreadcrumbList, Service and FAQPage on each service page.</li>
+    <li><strong>Critical 5, H1s.</strong> The homepage headline is one H1 with three animated lines rather than three H1s. Wording and animation unchanged.</li>
+    <li><strong>Critical 6 and 7, weight.</strong> Service heroes re-encoded, 14.4 MB to 1.6 MB. Project photos resized to render size, 8.4 MB to 3.8 MB. Duplicate <code>Services Page/</code> and <code>Partner Logos/</code> directories and both zips deleted, along with 23 unreferenced template images.</li>
+    <li><strong>Warnings 8, 9, 10, 11.</strong> Sitemap generated from the route constants, 18 URLs with <code>lastmod</code>. Branded Open Graph image added. Alt text rewritten, including the 18 project photos which now name the property and its city. The orphaned pre-redesign component tree is deleted, and the stale Houston address went with it.</li>
+  </ul>
+
+  <h3>New: the seven service pages</h3>
+  <p>Built from the service copy already published on <code>/services/</code> and the five-step process, expanded rather than invented. Dark theme, matching the live site. Linked from the services page, from the footer on every page, and from each other through the audience pages.</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>URL</th><th>Title</th><th>Chars</th></tr></thead>
+    <tbody>
+      <tr><td><code>/services/structured-cabling/</code></td><td>Structured Cabling &amp; Fiber Installation</td><td>58</td></tr>
+      <tr><td><code>/services/network-wifi/</code></td><td>Commercial Wi-Fi &amp; Network Installation</td><td>58</td></tr>
+      <tr><td><code>/services/video-surveillance/</code></td><td>Commercial Security Camera Installation</td><td>58</td></tr>
+      <tr><td><code>/services/access-control/</code></td><td>Commercial Access Control Installation</td><td>57</td></tr>
+      <tr><td><code>/services/voip-phone-systems/</code></td><td>VoIP Phone System Installation</td><td>49</td></tr>
+      <tr><td><code>/services/audio-video/</code></td><td>Commercial Audio &amp; Video Installation</td><td>56</td></tr>
+      <tr><td><code>/services/prop-tech-consulting/</code></td><td>Prop-Tech Consulting for Property Owners</td><td>59</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Found during the work, needs your decision</h3>
+  <div class="core">
+    <h3>Four of the five old service pages advertise things Halo does not sell.</h3>
+    <p>The audit called these pages off-brand, which was how the May notes described them. Reading the content, the problem is worse than styling. <code>/services/digital-solutions/</code> offers <em>Custom Software Development</em>, mobile apps and APIs. <code>/services/enterprise/</code> offers <em>Cloud Migration</em> and <em>Data Center Solutions</em>. <code>/services/hospitality/</code> offers <em>Revenue Management</em>. <code>/services/multi-family/</code> offers <em>Resident Portals</em>. These are unedited v0 template defaults that went live and were never rewritten.</p>
+    <p>Their titles, descriptions and alt text are now accurate, and they carry canonicals and schema. The page bodies still make the claims. My recommendation: delete <code>/services/digital-solutions/</code> and <code>/services/infrastructure-consulting/</code> (both are now covered by real service pages) and rewrite the three audience pages in the dark theme as pages that link down into the seven service pages. That clears the May deferral and the false claims in one pass.</p>
+  </div>
+
+  <h3>Caught in review, after the work above</h3>
+  <p class="sec-note">A code review and a security review were run against the change set. The security review found nothing critical, high or medium. The code review found four real faults, three of which this work introduced.</p>
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Introduced</span><span class="find-t">The collapsed H1 lost its word breaks</span></div>
+    <div class="find-b">
+      <p>Merging three H1s into one left the three lines as adjacent block spans with no whitespace. Anything reading <code>textContent</code> got <code>IlluminatingInfrastructurewith Excellence</code>. Fixed with explicit spaces, verified in the built HTML.</p>
+    </div>
+  </div>
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Introduced</span><span class="find-t">Alt text written without looking at the images</span></div>
+    <div class="find-b">
+      <p>Five of the alt strings described images that do not exist. <code>surveillance.jpg</code> is a video management dashboard on a monitor, not a dome camera on a building. <code>prop-tech.jpg</code> is an infographic, not a wall panel. <code>access-control.jpg</code> is a phone unlocking a keypad lock, not a card reader. Every image has now been viewed and its alt text rewritten from what is actually in the frame.</p>
+    </div>
+  </div>
+  <div class="find">
+    <div class="find-h"><span class="tag t-crit">Introduced</span><span class="find-t">Capability and vendor claims with no source</span></div>
+    <div class="find-b">
+      <p>The service page content asserted Verkada and Eagle Eye partnerships, fusion splicing, OTDR testing, firestopping, and that most of the company's work is new construction. None of that appears anywhere the client has published, and Verkada and Eagle Eye are not in the live partner marquee. These strings also feed FAQPage and Service structured data, which would have made them public machine-readable claims about someone else's business. All removed. The file now carries a written content rule and a note about this specific failure.</p>
+    </div>
+  </div>
+  <div class="find">
+    <div class="find-h"><span class="tag t-warn">Pre-existing, now confirmed</span><span class="find-t">The five legacy service pages are visually broken, not just off-brand</span></div>
+    <div class="find-b">
+      <p>They style with light-theme tokens inside a dark layout. Rendered and screenshotted to confirm: the <code>Multi-Family Solutions</code> H1 is near-black text on a near-black background and is effectively invisible, and the section below it fails AA contrast. The May notes called this "off-brand light design". It is worse than that.</p>
+      <p>Combined with the false capability claims, these five pages are now <code>noindex, follow</code> and removed from the sitemap, and their Service schema has been dropped so no structured data contradicts the page body. That is a holding state, reversible in one line, not a decision about their future.</p>
+    </div>
+  </div>
+  <p>Also fixed from the review: og:image dimensions were declared 1200x630 for every image including service JPEGs that are not that size; the Organization schema logo pointed at the white-on-transparent mark, which is illegible on white, and now uses the colour logo; <code>public/icon.svg</code> (the Next template default) and <code>app/icon.svg</code> (the Halo mark) both resolved to <code>/icon.svg</code>, so the template one is deleted; a lazy-loading attribute had been added to above-the-fold heroes, which hurts LCP; the contact page now sources its phone, email and address from the same constant as the schema; and <code>public/_redirects</code> sends any indexed <code>/redesign/*</code> URL to its real equivalent instead of a 404.</p>
+  <p>Two of the code review's claims were checked and rejected: it reported the service titles at 65 to 74 characters and the sitemap at 17 URLs, both read from a stale build. Current state is 49 to 59 characters and 13 URLs.</p>
+
+  <h3>Confirmed while checking: no off-site presence at all</h3>
+  <p>Searching the company name together with its own services and city returns one conference exhibitor listing and nothing else. No Google Business Profile surfaced, no directory listings, no vendor partner-directory entries. Competing Katy and Houston contractors appear in several. Nothing in the repo verifies Search Console either, though it may be verified by DNS.</p>
+  <p>This is worth stating plainly: the on-site work above makes the site rankable. It does not create the citations and links that decide who wins a local contractor search. Items 3 and 4 in the list below are now the binding constraint, not the code.</p>
+
+  <footer>
+    Audited 9 October 2026 against live production HTML and the <code>main</code> branch at <code>5d762268</code>. Every finding was checked against the deployed site rather than inferred from source. Written for <code>realjbmangum/site-halointegration</code>.
+  </footer>
+
+</div>
+</body>
+</html>

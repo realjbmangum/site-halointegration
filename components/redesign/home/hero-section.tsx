@@ -199,37 +199,44 @@ export function HeroRedesign() {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Main headline */}
-          <div className="overflow-hidden mb-4">
-            <motion.h1
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight"
-            >
-              Illuminating
-            </motion.h1>
-          </div>
-          <div className="overflow-hidden mb-4">
-            <motion.h1
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
-            >
-              <span className="bg-gradient-to-r from-[#00ffd5] via-[#00d4b0] to-[#a855f7] bg-clip-text text-transparent">Infrastructure</span>
-            </motion.h1>
-          </div>
-          <div className="overflow-hidden mb-8">
-            <motion.h1
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight"
-            >
-              with Excellence
-            </motion.h1>
-          </div>
+          {/* Main headline.
+              One <h1> for the whole headline, with each line as a block span.
+              This previously shipped as three separate <h1> tags, one per
+              animated line, which split the page's strongest ranking signal
+              into three fragments. The wording, the stagger and the rendered
+              result are unchanged. */}
+          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-bold leading-[0.95] tracking-tight">
+            <span className="block overflow-hidden mb-4">
+              <motion.span
+                initial={{ y: 100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="block text-white"
+              >
+                Illuminating
+              </motion.span>
+            </span>{" "}
+            <span className="block overflow-hidden mb-4">
+              <motion.span
+                initial={{ y: 100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+                className="block bg-gradient-to-r from-[#00ffd5] via-[#00d4b0] to-[#a855f7] bg-clip-text text-transparent"
+              >
+                Infrastructure
+              </motion.span>
+            </span>{" "}
+            <span className="block overflow-hidden mb-8">
+              <motion.span
+                initial={{ y: 100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                className="block text-white"
+              >
+                with Excellence
+              </motion.span>
+            </span>
+          </h1>
 
           {/* Subtitle */}
           <motion.p
@@ -239,7 +246,7 @@ export function HeroRedesign() {
             className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-12 leading-relaxed"
           >
             Structured cabling, access control, video surveillance, and digital solutions.
-            Turnkey technology solutions—the backbone of modern business, engineered from design through deployment.
+            Turnkey technology solutions, the backbone of modern business, engineered from design through deployment.
           </motion.p>
 
           {/* CTA Buttons */}

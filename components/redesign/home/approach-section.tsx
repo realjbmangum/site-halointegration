@@ -71,7 +71,7 @@ export function ApproachSectionRedesign() {
             </h2>
             <p className="text-lg text-white/60 leading-relaxed mb-8">
               At the heart of everything we do is a commitment to building meaningful, lasting relationships with our
-              clients. We don't just implement technology—we become your trusted partner in digital transformation.
+              clients. We don't just implement technology, we become your trusted partner in digital transformation.
             </p>
 
             {/* Checklist */}
