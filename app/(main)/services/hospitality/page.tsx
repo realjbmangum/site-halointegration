@@ -2,11 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { pageMetadata, breadcrumbSchema } from "@/lib/seo"
+import { JsonLd } from "@/components/seo/json-ld"
 
-export const metadata = {
-  title: "Hospitality Technology | Halo Integration",
-  description: "Technology solutions for hotels, resorts, and hospitality operations.",
-}
+export const metadata = pageMetadata({
+  title: "Hotel & Hospitality Technology",
+  description:
+    "Guest and back-of-house technology for hotels and resorts: guest Wi-Fi, structured cabling, video surveillance, access control and in-room technology, installed and certified.",
+  path: "/services/hospitality",
+  noindex: true,
+  image: "/services/digital-infrastructure.jpg",
+})
 
 export default function HospitalityPage() {
   const benefits = [
@@ -38,6 +44,12 @@ export default function HospitalityPage() {
 
   return (
     <main>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Services", path: "/services" },
+          { name: "Hospitality", path: "/services/hospitality" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +69,7 @@ export default function HospitalityPage() {
               </Button>
             </div>
             <div className="relative h-[400px] rounded-lg overflow-hidden">
-              <img src="/professional-technology-team-working-on-infrastruc.jpg" alt="Hospitality technology" className="w-full h-full object-cover" />
+              <img src="/professional-technology-team-working-on-infrastruc.jpg" alt="Technology team working on network infrastructure" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

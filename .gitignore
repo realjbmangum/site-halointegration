@@ -27,3 +27,8 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# Local dev / wrangler secrets
+.dev.vars
+.wrangler/
+.env*.local

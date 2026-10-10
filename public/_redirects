@@ -1,0 +1,8 @@
+# /redesign/* was a live, crawlable duplicate of the whole site between
+# March and October 2026. The route tree is deleted; send anything that was
+# indexed or shared to the real equivalent rather than a 404.
+/redesign/services/*  /services/   301
+/redesign/projects/*  /projects/   301
+/redesign/contact/*   /contact/    301
+/redesign/about/*     /about/      301
+/redesign/*           /            301

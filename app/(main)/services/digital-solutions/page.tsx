@@ -2,11 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { pageMetadata, breadcrumbSchema } from "@/lib/seo"
+import { JsonLd } from "@/components/seo/json-ld"
 
-export const metadata = {
-  title: "Digital Solutions | Halo Integration",
-  description: "Custom software development and digital transformation services.",
-}
+export const metadata = pageMetadata({
+  title: "Digital Infrastructure Solutions",
+  description:
+    "Digital infrastructure design and delivery: structured cabling backbones, network buildouts, systems integration, and the as-built documentation needed to operate it after handover.",
+  path: "/services/digital-solutions",
+  noindex: true,
+  image: "/services/digital-infrastructure.jpg",
+})
 
 export default function DigitalSolutionsPage() {
   const benefits = [
@@ -38,6 +44,12 @@ export default function DigitalSolutionsPage() {
 
   return (
     <main>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Services", path: "/services" },
+          { name: "Digital Infrastructure", path: "/services/digital-solutions" },
+        ])}
+      />
       {/* Hero Section */}
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,7 +70,7 @@ export default function DigitalSolutionsPage() {
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <img
                 src="/modern-technology-infrastructure-network-abstract-.jpg"
-                alt="Digital solutions"
+                alt="Abstract illustration of a network infrastructure topology"
                 className="w-full h-full object-cover"
               />
             </div>

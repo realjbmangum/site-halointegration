@@ -1,18 +1,28 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { Linkedin, Mail, ArrowUpRight } from "lucide-react"
+import { BUSINESS } from "@/lib/site"
 
 export function FooterRedesign() {
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
+    // The seven service pages. These are the pages intended to rank, so they
+    // need a site-wide internal link rather than only a card on /services/.
     services: [
-      { label: "Infrastructure Consulting", href: "/services/infrastructure-consulting" },
-      { label: "Digital Solutions", href: "/services/digital-solutions" },
+      { label: "Structured Cabling", href: "/services/structured-cabling" },
+      { label: "Network & Wi-Fi", href: "/services/network-wifi" },
+      { label: "Video Surveillance", href: "/services/video-surveillance" },
+      { label: "Access Control", href: "/services/access-control" },
+      { label: "VoIP Phone Systems", href: "/services/voip-phone-systems" },
+      { label: "Audio & Video", href: "/services/audio-video" },
+      { label: "Prop-Tech Consulting", href: "/services/prop-tech-consulting" },
+    ],
+    industries: [
       { label: "Multi-Family", href: "/services/multi-family" },
       { label: "Hospitality", href: "/services/hospitality" },
+      { label: "Enterprise", href: "/services/enterprise" },
     ],
     company: [
       { label: "About Us", href: "/about" },
@@ -36,11 +46,17 @@ export function FooterRedesign() {
               <span className="text-2xl font-bold text-gradient">HALO</span>
             </Link>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Leading infrastructure technology consulting firm specializing in cutting-edge digital solutions.
+              Low voltage and digital infrastructure for multi-family, hospitality and enterprise
+              properties. Surveyed, designed, installed and certified.
             </p>
             <div className="flex gap-3">
+              {/* Sourced from the single NAP constant. This previously
+                  pointed at hello@, while the contact page, the JSON-LD and
+                  every other reference used info@. Inconsistent contact
+                  details are exactly what this constant exists to prevent. */}
               <a
-                href="mailto:hello@halointegration.com"
+                href={`mailto:${BUSINESS.email}`}
+                aria-label={`Email ${BUSINESS.name}`}
                 className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-[#00ffd5] hover:border-[#00ffd5]/30 hover:bg-[#00ffd5]/10 transition-all duration-300"
               >
                 <Mail size={18} />
@@ -49,6 +65,7 @@ export function FooterRedesign() {
                 href="https://www.linkedin.com/company/halo-integration"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${BUSINESS.name} on LinkedIn`}
                 className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-[#00ffd5] hover:border-[#00ffd5]/30 hover:bg-[#00ffd5]/10 transition-all duration-300"
               >
                 <Linkedin size={18} />
@@ -61,6 +78,29 @@ export function FooterRedesign() {
             <h4 className="text-sm font-semibold text-white mb-6 uppercase tracking-wider">Services</h4>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="group flex items-center gap-1 text-sm text-white/50 hover:text-[#00ffd5] transition-colors"
+                  >
+                    {link.label}
+                    <ArrowUpRight
+                      size={12}
+                      className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industries */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-6 uppercase tracking-wider">
+              Industries
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.industries.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
