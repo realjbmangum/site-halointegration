@@ -1,0 +1,17 @@
+# Next.js writes a React Server Component payload beside every page of a
+# static export (index.txt, __next._tree.txt and friends, 68 files here).
+# They exist so client-side navigation does not refetch whole HTML pages, and
+# Next prefetches them on hover and in viewport, so a JavaScript-rendering
+# crawler will request them.
+#
+# They are served as text/plain, they contain the page's content, and being
+# plain text they cannot carry a <link rel="canonical">. That is the exact
+# shape of Search Console's "Duplicate without user-selected canonical":
+# duplicate content on a URL that declares no canonical.
+#
+# X-Robots-Tag rather than a robots.txt Disallow, deliberately. Disallow stops
+# the crawl but leaves anything already indexed in place; noindex lets Google
+# fetch the file, read the directive and drop it. Do not add a Disallow for
+# these as well, or Google can no longer see this header.
+/*.txt
+  X-Robots-Tag: noindex
