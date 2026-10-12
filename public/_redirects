@@ -1,24 +1,36 @@
-# /redesign/* was a live, crawlable duplicate of the whole site between
-# March and October 2026. The route tree is deleted; send anything that was
-# indexed or shared to the real equivalent rather than a 404.
+# Cloudflare Pages takes the FIRST matching rule, and requires all static
+# rules before any dynamic (splat) ones. The specific paths therefore have to
+# come above the catch-alls, or the catch-all swallows them.
 #
-# Each path is listed twice on purpose: a /*-splat rule does not match the
-# slashless form, and with trailingSlash:true nothing redirects bare -> slash
-# once the directory no longer exists.
-/redesign                              /              301
-/redesign/*                            /              301
-/redesign/services                     /services/     301
-/redesign/services/*                   /services/     301
-/redesign/projects                     /projects/     301
-/redesign/projects/*                   /projects/     301
-/redesign/contact                      /contact/      301
-/redesign/contact/*                    /contact/      301
-/redesign/about                        /about/        301
-/redesign/about/*                      /about/        301
+# This file previously listed /redesign/* second, which made every specific
+# rule below it unreachable: /redesign/services/ redirected to / rather than
+# to /services/.
+#
+# Each path is also listed twice on purpose. A /*-splat rule does not match
+# the slashless form, and with trailingSlash:true nothing redirects bare to
+# slash once the directory no longer exists.
 
-# digital-solutions and infrastructure-consulting were pre-redesign pages
-# superseded by the real service pages. Deleted October 2026.
-/services/digital-solutions            /services/structured-cabling/    301
-/services/digital-solutions/*          /services/structured-cabling/    301
-/services/infrastructure-consulting    /services/prop-tech-consulting/  301
-/services/infrastructure-consulting/*  /services/prop-tech-consulting/  301
+# --- Static rules (exact paths, no splat) ---
+
+# /redesign/* was a live, crawlable duplicate of the whole site between
+# March and October 2026. The route tree is deleted.
+/redesign/services                     /services/                        301
+/redesign/projects                     /projects/                        301
+/redesign/contact                      /contact/                         301
+/redesign/about                        /about/                           301
+/redesign                              /                                 301
+
+# Pre-redesign pages superseded by the real service pages, deleted Oct 2026.
+/services/digital-solutions            /services/structured-cabling/     301
+/services/infrastructure-consulting    /services/prop-tech-consulting/   301
+
+# --- Dynamic rules (splat), most specific first ---
+
+/redesign/services/*                   /services/                        301
+/redesign/projects/*                   /projects/                        301
+/redesign/contact/*                    /contact/                         301
+/redesign/about/*                      /about/                           301
+/redesign/*                            /                                 301
+
+/services/digital-solutions/*          /services/structured-cabling/     301
+/services/infrastructure-consulting/*  /services/prop-tech-consulting/   301
