@@ -30,6 +30,7 @@ export function FooterRedesign() {
       { label: "Projects", href: "/projects" },
       { label: "Videos", href: "/videos" },
       { label: "Contact", href: "/contact" },
+      { label: "Privacy", href: "/privacy" },
     ],
   }
 
