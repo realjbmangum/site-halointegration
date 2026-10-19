@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { Mail, Phone, MapPin, Loader2, Send, CheckCircle } from "lucide-react"
 import { BUSINESS } from "@/lib/site"
+import { trackLead } from "@/lib/analytics"
 
 // Contact details come from the single NAP constant. Local search ranking
 // depends on these strings being byte-identical everywhere they appear, and
@@ -63,6 +64,10 @@ export function ContactPageClient() {
       })
 
       if (!response.ok) throw new Error("Form submission failed")
+
+      // Only on a confirmed submission, never on the attempt. A Lead counted
+      // for a failed submit teaches the ad platform the wrong thing.
+      trackLead()
 
       setIsSubmitted(true)
       ;(e.target as HTMLFormElement).reset()

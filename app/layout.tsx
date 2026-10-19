@@ -7,6 +7,8 @@ import "./brand.css"
 import { SITE_URL, BUSINESS } from "@/lib/site"
 import { organizationSchema } from "@/lib/seo"
 import { JsonLd } from "@/components/seo/json-ld"
+import { AdPixels } from "@/components/analytics/ad-pixels"
+import { PixelRouteTracker } from "@/components/analytics/pixel-route-tracker"
 
 export const metadata: Metadata = {
   // metadataBase is what makes every relative canonical and Open Graph image
@@ -48,9 +50,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <JsonLd data={organizationSchema()} />
+        <AdPixels />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         {children}
+        <PixelRouteTracker />
       </body>
     </html>
   )
