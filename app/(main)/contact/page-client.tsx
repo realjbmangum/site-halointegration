@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Mail, Phone, MapPin, Loader2, Send, CheckCircle } from "lucide-react"
 import { BUSINESS } from "@/lib/site"
 import { trackLead } from "@/lib/analytics"
+import { postForm } from "@/lib/leads"
 
 // Contact details come from the single NAP constant. Local search ranking
 // depends on these strings being byte-identical everywhere they appear, and
@@ -57,13 +58,7 @@ export function ContactPageClient() {
     const data = Object.fromEntries(formData.entries())
 
     try {
-      const response = await fetch("https://formspree.io/f/xpwykanv", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      if (!response.ok) throw new Error("Form submission failed")
+      await postForm(data)
 
       // Only on a confirmed submission, never on the attempt. A Lead counted
       // for a failed submit teaches the ad platform the wrong thing.
@@ -73,7 +68,7 @@ export function ContactPageClient() {
       ;(e.target as HTMLFormElement).reset()
 
       setTimeout(() => setIsSubmitted(false), 5000)
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.")
     } finally {
       setIsSubmitting(false)

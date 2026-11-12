@@ -7,16 +7,17 @@ import { BUSINESS } from "@/lib/site"
  * Privacy notice.
  *
  * Written from an audit of what the site actually does, not from a template:
- * the nine contact form fields, Formspree as the form processor, Cloudflare
- * as the host, the Google Maps iframe on /contact/, the youtube-nocookie
- * iframes on /videos/, and the Meta Pixel being added for advertising
- * measurement. If any of those change, this page changes with them.
+ * the contact form fields, the quote forms on /cameras and /structuredcabling,
+ * Formspree as the form processor, Cloudflare as the host, the Google Maps
+ * iframe on /contact/, the youtube-nocookie iframes on /videos/, the Meta
+ * Pixel, the LinkedIn Insight Tag, and Google Tag Manager. If any of those
+ * change, this page changes with them.
  *
  * Contact details come from BUSINESS so they cannot drift from the rest of
  * the site, which is the same reason lib/site.ts exists.
  */
 
-const LAST_UPDATED = "12 October 2026"
+const LAST_UPDATED = "12 November 2026"
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
@@ -100,6 +101,13 @@ export default function PrivacyPage() {
                   field. Nothing on that form is required by us beyond what we need to reply.
                 </p>
                 <p>
+                  The quote forms on the security camera and network cabling pages send your name,
+                  business name, phone number, email address, what you need, which page the request
+                  came from, and the other details that form asks for, such as number of locations,
+                  a rough camera count, square footage or number of drops, and timeline. Those forms
+                  use the same Formspree processor as the contact form.
+                </p>
+                <p>
                   <strong className="text-white">Information collected automatically.</strong> Like
                   most websites, our host records standard technical information when you visit:
                   your IP address, browser and device type, the pages you request, and the time of
@@ -138,12 +146,18 @@ export default function PrivacyPage() {
                   <li>
                     <strong className="text-white">Google</strong> receives a request from your
                     browser when a page containing an embedded Google Map or an embedded YouTube
-                    video loads. Our video embeds use YouTube&apos;s no-cookie domain, which limits
-                    but does not remove this.
+                    video loads, and when Google Tag Manager loads. Our video embeds use
+                    YouTube&apos;s no-cookie domain, which limits but does not remove this. Tag
+                    Manager can forward visit data to Google products configured in that container,
+                    including advertising measurement.
                   </li>
                   <li>
                     <strong className="text-white">Meta</strong> receives information about visits
                     to this site through an advertising pixel, described in the next section.
+                  </li>
+                  <li>
+                    <strong className="text-white">LinkedIn</strong> receives information about
+                    visits through the LinkedIn Insight Tag, used to measure LinkedIn advertising.
                   </li>
                 </ul>
                 <p>
@@ -156,18 +170,30 @@ export default function PrivacyPage() {
                 <p>
                   This site uses the Meta Pixel so we can measure whether our advertising is
                   working: how many people who saw an advert visited the site, and how many of
-                  those submitted the contact form. This involves cookies and similar technology,
-                  and it means Meta receives information about your visit and may match it to a
-                  Meta account.
+                  those submitted a form. This involves cookies and similar technology, and it
+                  means Meta receives information about your visit and may match it to a Meta
+                  account.
+                </p>
+                <p>
+                  The site also loads the LinkedIn Insight Tag, which lets LinkedIn measure visits
+                  from LinkedIn advertising in the same way.
+                </p>
+                <p>
+                  Google Tag Manager (container GTM-N4X6L3H8) loads on each page. It is the only
+                  Google tag on this site. Tags configured in that container can set cookies and
+                  send measurement data to Google. Google Ads conversions are set up inside that
+                  container. When a quote form is submitted, the page sends a generate_lead event
+                  for Tag Manager to use as that conversion.
                 </p>
                 <p>
                   Under Texas law this counts as targeted advertising, and you can tell us to stop.
-                  See the next section. You can also limit this through your Meta account settings
-                  and through your browser&apos;s cookie controls.
+                  See the next section. You can also limit this through your Meta account settings,
+                  your LinkedIn account settings, your Google account settings, and your
+                  browser&apos;s cookie controls.
                 </p>
                 <p>
                   Embedded Google Maps and YouTube content may also set cookies when those parts of
-                  a page load. We do not use analytics cookies of our own.
+                  a page load.
                 </p>
               </Section>
 

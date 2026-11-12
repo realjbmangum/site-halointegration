@@ -16,10 +16,19 @@
 export const META_PIXEL_ID = "1625253125640269"
 export const LINKEDIN_PARTNER_ID = "10192444"
 
+/**
+ * Public container id, same as the pixel ids above. It is not a secret.
+ * This is the only Google tag. Ads conversions are configured inside the
+ * container, on the generate_lead event from trackGenerateLead. Do not add
+ * a separate gtag or Ads snippet.
+ */
+export const GTM_CONTAINER_ID = "GTM-N4X6L3H8"
+
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void
     lintrk?: (action: string, data?: Record<string, unknown>) => void
+    dataLayer?: unknown[]
   }
 }
 
@@ -40,4 +49,29 @@ export function trackLead(): void {
   } catch {
     // Deliberately swallowed. See above.
   }
+}
+
+/**
+ * Fires after a landing-page quote is accepted by Formspree, before the
+ * browser moves to /thank-you. The navigation is client-side, so the page
+ * does not unload out from under the tag.
+ *
+ * `generate_lead` is the event Google Ads conversions inside GTM should
+ * listen for. `page` is the landing path. No form fields are included.
+ * Do not add a separate gtag or Ads snippet.
+ *
+ * Also counts a Meta Lead, matching the contact form.
+ */
+export function trackGenerateLead({ page, campaign }: { page: string; campaign: string }): void {
+  try {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      event: "generate_lead",
+      page,
+      campaign,
+    })
+  } catch {
+    // Measurement must never block the thank-you page.
+  }
+  trackLead()
 }

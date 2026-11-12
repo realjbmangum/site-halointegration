@@ -20,6 +20,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Content date, not build time: stamping every URL with the build
   // timestamp on each deploy is a date search engines learn to ignore.
   const lastModified = new Date("2026-10-09")
+  // Campaign pages are indexable. The site does not noindex marketing
+  // pages, and robots.txt allows /. /thank-you is left out: it is a
+  // post-submit confirmation, and nothing else on the site links to it.
+  // These two are listed by hand. This generator does not discover routes.
+  const landingDate = new Date("2026-11-12")
 
   const core = [
     { path: "/", priority: 1.0, changeFrequency: "weekly" as const },
@@ -51,6 +56,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    })),
+    // Lower priority than the service pages, which are the URLs meant to rank.
+    ...[
+      { path: "/cameras", priority: 0.4 },
+      { path: "/structuredcabling", priority: 0.4 },
+    ].map((r) => ({
+      url: absoluteUrl(r.path),
+      lastModified: landingDate,
+      changeFrequency: "monthly" as const,
+      priority: r.priority,
     })),
   ]
 }
