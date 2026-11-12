@@ -179,11 +179,11 @@ export default function PrivacyPage() {
                   from LinkedIn advertising in the same way.
                 </p>
                 <p>
-                  Google Tag Manager (container GTM-N4X6L3H8) loads on each page. Tags configured
-                  in that container can set cookies and send measurement data to Google, including
-                  for Google Ads. A Google Ads conversion tag is not installed in the page itself.
-                  When a quote form is submitted, the page sends a generate_lead event that Tag
-                  Manager can use as a conversion.
+                  Google Tag Manager (container GTM-N4X6L3H8) loads on each page. It is the only
+                  Google tag on this site. Tags configured in that container can set cookies and
+                  send measurement data to Google. Google Ads conversions are set up inside that
+                  container. When a quote form is submitted, the page sends a generate_lead event
+                  for Tag Manager to use as that conversion.
                 </p>
                 <p>
                   Under Texas law this counts as targeted advertising, and you can tell us to stop.
