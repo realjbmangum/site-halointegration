@@ -16,12 +16,11 @@ export type QuoteExtraField = {
   label: string
   kind: "select" | "text"
   options?: QuoteOption[]
-  placeholder?: string
   inputMode?: "text" | "numeric" | "tel"
 }
 
 const fieldClass =
-  "w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#00ffd5]/50 focus:outline-none focus:ring-1 focus:ring-[#00ffd5]/50 transition-colors disabled:opacity-50"
+  "w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:border-[#00ffd5]/50 focus:outline-none focus:ring-1 focus:ring-[#00ffd5]/50 transition-colors disabled:opacity-50"
 
 type QuoteFormProps = {
   page: string
@@ -216,7 +215,6 @@ export function QuoteForm({ page, campaign, heading, needOptions, extraFields }:
                 name={field.name}
                 type="text"
                 inputMode={field.inputMode ?? "text"}
-                placeholder={field.placeholder}
                 required
                 disabled={isSubmitting}
                 aria-invalid={errors[field.name] ? true : undefined}

@@ -1,10 +1,7 @@
-import Link from "next/link"
-import Image from "next/image"
 import { Check, ChevronDown } from "lucide-react"
 import { pageMetadata, breadcrumbSchema, faqSchema } from "@/lib/seo"
 import { JsonLd } from "@/components/seo/json-ld"
 import { BUSINESS } from "@/lib/site"
-import { PlaceholderNote } from "@/components/landing/placeholder-note"
 import { QuoteForm } from "@/components/landing/quote-form"
 
 export const metadata = pageMetadata({
@@ -27,46 +24,14 @@ const steps = [
   "Install by licensed technicians.",
 ]
 
-// Draft answers that restate facts already published on /services/video-surveillance.
-// Anything Halo has not published (brands, prices, install timelines, ownership)
-// is a visible placeholder and is left out of the FAQ schema.
-const faqs: { q: string; a: string; placeholder: boolean }[] = [
-  {
-    q: "How fast can you install?",
-    // TODO(client): publish a typical install window. Do not invent a number of days.
-    a: "A standard install timeline has not been published for this page. The walkthrough and the written quote are what confirm timing for a site.",
-    placeholder: true,
-  },
-  {
-    q: "Do I own the system?",
-    // TODO(client): confirm hardware ownership and how platform licenses are billed after handover.
-    // The service page says the system runs under the customer's account. It does not say who owns the cameras.
-    a: "Whether you own the cameras and recording hardware, and how licenses are billed after handover, has not been confirmed for this page. The surveillance service page says the system is handed over to run under your account rather than ours. It does not state hardware ownership.",
-    placeholder: true,
-  },
+const faqs = [
   {
     q: "Where is footage stored?",
-    // TODO(client): confirm this is always cloud storage. Update the answer if a local recorder is also offered.
     a: "Footage is stored on a cloud video platform. How long it is kept is set during design, to the policy the property or its insurer requires. The written quote names that retention term.",
-    placeholder: false,
-  },
-  {
-    q: "Which brands do you use?",
-    // TODO(client): name the camera and platform brands if they should appear on this ad page.
-    // Do not add a brand that is not already published. The partner marquee does not list camera brands.
-    a: "Specific camera brands are not listed here yet. The surveillance service page says Halo works with cloud-managed video platforms rather than a single product line, and that the platform follows the retention, analytics, and multi-site requirements. Ask which platforms are currently carried.",
-    placeholder: true,
   },
   {
     q: "Can you service my existing system?",
     a: "Yes. We upgrade existing systems. Where cameras already on the property are still serviceable, we bring them onto the new platform instead of replacing them. The walkthrough is how we tell which applies.",
-    placeholder: false,
-  },
-  {
-    q: "What does the cloud plan cost after the free months?",
-    // TODO(client): publish the monthly cloud plan price after the free period. Do not put a number here before then.
-    a: "The monthly cloud plan price after the free months has not been published. The written quote is where that price will be stated.",
-    placeholder: true,
   },
 ]
 
@@ -76,9 +41,7 @@ export default function CamerasLandingPage() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([{ name: "Security Cameras", path: "/cameras" }])} />
-      <JsonLd
-        data={faqSchema(faqs.filter((item) => !item.placeholder).map(({ q, a }) => ({ q, a })))}
-      />
+      <JsonLd data={faqSchema(faqs)} />
       <main>
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" aria-hidden="true">
@@ -97,22 +60,10 @@ export default function CamerasLandingPage() {
               <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-8">
                 Free on-site walkthrough. Written fixed-price quote in 48 hours.
               </p>
-
-              {/*
-                TODO(client): the offer is not chosen. Keep both options in the
-                sentence until Halo picks "3 months of cloud storage free" or
-                "1 camera free". Replace the terms link once a terms URL exists.
-              */}
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 text-left sm:text-center mb-8">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 mb-8">
                 <p className="text-base sm:text-lg text-white leading-relaxed">
                   Approve your quote within 7 days and get 3 months of cloud storage free OR 1 camera
-                  free. New systems only.{" "}
-                  <a
-                    href="#offer-terms"
-                    className="text-[#00ffd5] underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00ffd5] rounded-sm"
-                  >
-                    Offer terms
-                  </a>
+                  free. New systems only.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -128,15 +79,6 @@ export default function CamerasLandingPage() {
                 >
                   Call {BUSINESS.phoneDisplay}
                 </a>
-              </div>
-              {/* TODO(client): replace this block with the published offer terms. */}
-              <div id="offer-terms" className="mt-4 scroll-mt-28 text-left max-w-3xl mx-auto">
-                <PlaceholderNote title="Placeholder: offer terms">
-                  <p>
-                    Offer terms are not written yet. This link stays on the page until Halo publishes
-                    them and chooses which offer applies.
-                  </p>
-                </PlaceholderNote>
               </div>
             </div>
           </div>
@@ -158,18 +100,6 @@ export default function CamerasLandingPage() {
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-
-        <section className="pb-16 sm:pb-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto rounded-2xl border border-white/10 bg-[#0a0a0f] p-6 sm:p-8 text-center">
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-[#00ffd5] mb-3">Price</h2>
-              {/* TODO(client): a package price is still being built. This range is the interim anchor. */}
-              <p className="text-xl sm:text-2xl font-semibold text-white leading-snug">
-                Most small business systems run from $2,000 to $5,000.
-              </p>
-            </div>
           </div>
         </section>
 
@@ -217,47 +147,9 @@ export default function CamerasLandingPage() {
                     label: "Rough number of cameras",
                     kind: "text",
                     inputMode: "numeric",
-                    placeholder: "For example, 8",
                   },
                 ]}
               />
-            </div>
-          </div>
-        </section>
-
-        <section className="pb-16 sm:pb-20 border-t border-white/5 pt-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 text-center">Proof</h2>
-            <p className="text-white/60 mb-8 max-w-2xl mx-auto text-center">
-              Install photos and customer quotes are not on this page yet. Nothing below is a
-              testimonial.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <PlaceholderNote title="Placeholder: real install photo">
-                <p>Add a photo from a finished camera install. Do not use a stock image here.</p>
-              </PlaceholderNote>
-              <PlaceholderNote title="Placeholder: real install photo">
-                <p>Add a second install photo, if one is available.</p>
-              </PlaceholderNote>
-              <PlaceholderNote title="Placeholder: customer quote">
-                <p>Add one real customer quote. Do not invent a testimonial.</p>
-              </PlaceholderNote>
-              <PlaceholderNote title="Placeholder: customer quote">
-                <p>Add a second quote only if a real one exists. One is enough.</p>
-              </PlaceholderNote>
-              <div className="sm:col-span-2 rounded-xl border border-white/10 bg-white/[0.03] p-6 flex flex-col sm:flex-row sm:items-center gap-6">
-                <Image
-                  src="/halo-logo.png"
-                  alt="Halo Integration logo"
-                  width={180}
-                  height={180}
-                  className="h-16 w-auto"
-                />
-                <p className="text-white/70 leading-relaxed">
-                  Halo logo. This is the live mark. The photos and quotes in this section are still
-                  placeholders.
-                </p>
-              </div>
             </div>
           </div>
         </section>
@@ -279,27 +171,11 @@ export default function CamerasLandingPage() {
                     />
                   </summary>
                   <div className="pt-4 text-white/75 leading-relaxed">
-                    {item.placeholder ? (
-                      <PlaceholderNote title="Placeholder answer">
-                        <p>{item.a}</p>
-                      </PlaceholderNote>
-                    ) : (
-                      <p>{item.a}</p>
-                    )}
+                    <p>{item.a}</p>
                   </div>
                 </details>
               ))}
             </div>
-            <p className="mt-8 text-sm text-white/50 text-center">
-              More on the service itself is on{" "}
-              <Link
-                href="/services/video-surveillance"
-                className="text-[#00ffd5] underline underline-offset-4"
-              >
-                video surveillance
-              </Link>
-              .
-            </p>
           </div>
         </section>
       </main>
