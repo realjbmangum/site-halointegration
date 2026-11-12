@@ -8,6 +8,7 @@ import { SITE_URL, BUSINESS } from "@/lib/site"
 import { organizationSchema } from "@/lib/seo"
 import { JsonLd } from "@/components/seo/json-ld"
 import { AdPixels } from "@/components/analytics/ad-pixels"
+import { GoogleTagManagerHead, GoogleTagManagerNoScript } from "@/components/analytics/google-tag-manager"
 import { PixelRouteTracker } from "@/components/analytics/pixel-route-tracker"
 
 export const metadata: Metadata = {
@@ -49,10 +50,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <GoogleTagManagerHead />
         <JsonLd data={organizationSchema()} />
         <AdPixels />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <GoogleTagManagerNoScript />
         {children}
         <PixelRouteTracker />
       </body>
