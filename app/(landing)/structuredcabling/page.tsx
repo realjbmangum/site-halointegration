@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { Check } from "lucide-react"
 import { pageMetadata, breadcrumbSchema } from "@/lib/seo"
 import { JsonLd } from "@/components/seo/json-ld"
@@ -95,16 +94,6 @@ export default function StructuredCablingLandingPage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-8 text-sm text-white/50 text-center">
-              The full cabling service is described on{" "}
-              <Link
-                href="/services/structured-cabling"
-                className="text-[#00ffd5] underline underline-offset-4"
-              >
-                structured cabling
-              </Link>
-              .
-            </p>
           </div>
         </section>
 
@@ -126,13 +115,11 @@ export default function StructuredCablingLandingPage() {
                     name: "squareFootageOrDrops",
                     label: "Square footage or number of drops",
                     kind: "text",
-                    placeholder: "For example, 10000 sq ft or 40 drops",
                   },
                   {
                     name: "timeline",
                     label: "Timeline",
                     kind: "text",
-                    placeholder: "For example, next month",
                   },
                 ]}
               />
